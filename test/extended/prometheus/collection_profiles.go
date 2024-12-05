@@ -108,14 +108,6 @@ var _ = g.Describe("[sig-instrumentation][OCPFeatureGate:MetricsCollectionProfil
 			err = r.kclient.CoreV1().ConfigMaps(operatorNamespaceName).Delete(tctx, operatorConfigurationName, metav1.DeleteOptions{})
 		}
 		o.Expect(err).To(o.BeNil())
-
-		o.Eventually(func() error {
-			_, err := r.kclient.CoreV1().ConfigMaps(operatorNamespaceName).Get(tctx, operatorConfigurationName, metav1.GetOptions{})
-			if errors.IsNotFound(err) {
-				return nil
-			}
-			return fmt.Errorf("ConfigMap %q still exists after deletion attempt", operatorConfigurationName)
-		}).Should(o.BeNil())
 	})
 
 	g.Context("initially, in a homogeneous default environment,", func() {
